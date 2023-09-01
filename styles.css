@@ -1,8 +1,1 @@
-/*
-
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
+.infobox.svelte-fv0vca{display:flex;gap:1rem}.infobox__photo.svelte-fv0vca{width:240px;height:240px;object-fit:cover;border-radius:6px}.infobox__description.svelte-fv0vca{flex-grow:1}.infobox__grid.svelte-fv0vca{display:grid;gap:0.25rem 0.5rem;grid-template-columns:auto 1fr}
