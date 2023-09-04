@@ -1,5 +1,4 @@
-import type {App} from 'obsidian';
-import {parseYaml, TFile} from 'obsidian';
+import type {MarkdownPostProcessorContext} from 'obsidian';
 import dayjs, {Dayjs} from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/ru';
@@ -159,29 +158,16 @@ function getPropAsGender(meta: Properties, key: string): Gender {
     return (prop === 'male' || prop === 'female') ? prop : null;
 }
 
-async function parseFrontmatter(app: App): Promise<Properties> {
+async function parseFrontmatter(ctx: MarkdownPostProcessorContext): Promise<Properties> {
     try {
-        const file = app.workspace.getActiveFile();
+        if (ctx?.frontmatter) {
+            const meta: Property[] = [];
 
-        if (file instanceof TFile) {
-            const fileCache = app.metadataCache.getFileCache(file);
-
-            if (fileCache?.frontmatter) {
-                // @ts-ignore - this is part of the new Obsidian API as of v1.4.1
-                // eslint-disable-next-line no-unsafe-optional-chaining
-                const {start, end} = fileCache?.frontmatterPosition;
-                const fileContent = await app.vault.cachedRead(file);
-
-                const yamlContent: string = fileContent.split('\n').slice(start.line, end.line).join('\n');
-                const parsedYaml = parseYaml(yamlContent);
-                const metaYaml: Property[] = [];
-
-                for (const key in parsedYaml) {
-                    metaYaml.push({key, value: parsedYaml[key]});
-                }
-
-                return metaYaml;
+            for (const key in ctx.frontmatter) {
+                meta.push({key, value: ctx.frontmatter[key]});
             }
+
+            return meta;
         }
     } catch (e) {
         console.log(e);
@@ -204,8 +190,8 @@ export function parsePersonMeta(meta: Properties): Person {
     return person;
 }
 
-export async function parse(app: App): Promise<Entity | null> {
-    const meta = await parseFrontmatter(app);
+export async function parse(ctx: MarkdownPostProcessorContext): Promise<Entity | null> {
+    const meta = await parseFrontmatter(ctx);
 
     switch (getProp(meta, 'type')) {
         case 'person':

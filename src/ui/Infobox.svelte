@@ -18,7 +18,7 @@
     }
 
     async function parseEntity() {
-        entity = await parse(app);
+        entity = await parse(ctx);
     }
 
     onMount(() => {
