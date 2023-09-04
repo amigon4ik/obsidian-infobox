@@ -1,6 +1,5 @@
 import {MarkdownRenderChild, Plugin} from 'obsidian';
-
-import InfoboxView from './ui/InfoboxView.svelte';
+import Infobox from './ui/Infobox.svelte';
 
 export default class InfoboxPlugin extends Plugin {
     async onload() {
@@ -9,18 +8,18 @@ export default class InfoboxPlugin extends Plugin {
             (source, containerEl, ctx) => {
                 const node = containerEl.createEl('div');
 
-                const svelteComponent = new InfoboxView({
+                const infobox = new Infobox({
                     target: containerEl,
-                    props: {ctx, app: this.app},
+                    props: {ctx, app: this.app, plugin: this},
                 });
 
-                class UnloadSvelteComponent extends MarkdownRenderChild {
+                class UnloadInfobox extends MarkdownRenderChild {
                     onunload() {
-                        svelteComponent.$destroy();
+                        infobox.$destroy();
                     }
                 }
 
-                ctx.addChild(new UnloadSvelteComponent(node));
+                ctx.addChild(new UnloadInfobox(node));
             }
         );
     }
