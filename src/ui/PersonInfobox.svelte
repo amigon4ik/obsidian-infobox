@@ -1,5 +1,4 @@
 <script lang="ts">
-    import './../assets/style.css';
     import type {MarkdownPostProcessorContext} from 'obsidian';
     import {MarkdownRenderer} from 'obsidian';
     import EmojiAvatar from './EmojiAvatar.svelte';
@@ -90,6 +89,13 @@
 </div>
 
 <style>
+    .infobox {
+        display: flex;
+        gap: 2rem;
+        align-items: start;
+        margin-bottom: 2rem;
+    }
+
     .avatar {
         display: grid;
         place-content: center;

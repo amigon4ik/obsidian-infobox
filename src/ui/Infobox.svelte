@@ -42,6 +42,4 @@
 
 {#if entity instanceof Person}
     <PersonInfobox ctx={ctx} plugin={plugin} person={entity}></PersonInfobox>
-{:else}
-
 {/if}
