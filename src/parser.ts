@@ -1,4 +1,5 @@
 import type {MarkdownPostProcessorContext} from 'obsidian';
+import {App, TFile} from "obsidian";
 import dayjs, {Dayjs} from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/ru';
@@ -158,16 +159,23 @@ function getPropAsGender(meta: Properties, key: string): Gender {
     return (prop === 'male' || prop === 'female') ? prop : null;
 }
 
-async function parseFrontmatter(ctx: MarkdownPostProcessorContext): Promise<Properties> {
+async function parseFrontmatter(app: App, ctx: MarkdownPostProcessorContext): Promise<Properties> {
     try {
-        if (ctx?.frontmatter) {
-            const meta: Property[] = [];
+        const file = app.vault.getAbstractFileByPath(ctx.sourcePath);
 
-            for (const key in ctx.frontmatter) {
-                meta.push({key, value: ctx.frontmatter[key]});
+        if (file instanceof TFile) {
+            const cache = app.metadataCache.getFileCache(file);
+            const frontmatter = cache?.frontmatter;
+
+            if (frontmatter) {
+                const meta: Property[] = [];
+
+                for (const key in frontmatter) {
+                    meta.push({key, value: frontmatter[key]});
+                }
+
+                return meta;
             }
-
-            return meta;
         }
     } catch (e) {
         console.log(e);
@@ -190,8 +198,8 @@ export function parsePersonMeta(meta: Properties): Person {
     return person;
 }
 
-export async function parse(ctx: MarkdownPostProcessorContext): Promise<Entity | null> {
-    const meta = await parseFrontmatter(ctx);
+export async function parse(app: App, ctx: MarkdownPostProcessorContext): Promise<Entity | null> {
+    const meta = await parseFrontmatter(app, ctx);
 
     switch (getProp(meta, 'type')) {
         case 'person':

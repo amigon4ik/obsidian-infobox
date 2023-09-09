@@ -18,23 +18,30 @@
     }
 
     async function parseEntity() {
-        entity = await parse(ctx);
+        entity = await parse(app, ctx);
     }
 
     onMount(() => {
         updateSourceMode();
+        parseEntity();
 
-        const x = app.workspace.on('layout-change', () => {
+        const evt1 = app.workspace.on('layout-change', () => {
             updateSourceMode();
         });
 
-        parseEntity();
-        return () => app.workspace.offref(x);
+        const evt2 = app.metadataCache.on('changed', () => {
+            parseEntity();
+        });
+
+        return () => {
+            app.workspace.offref(evt1);
+            app.workspace.offref(evt2);
+        };
     });
 </script>
 
-{#if isSourceMode}
-    <div style="color: red;">Infobox is not available in source mode</div>
-{:else if (entity instanceof Person)}
+{#if entity instanceof Person}
     <PersonInfobox ctx={ctx} plugin={plugin} person={entity}></PersonInfobox>
+{:else}
+
 {/if}

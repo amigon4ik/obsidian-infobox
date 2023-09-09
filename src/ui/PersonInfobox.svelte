@@ -35,61 +35,59 @@
     }
 </script>
 
-{#if person}
-    <div class="infobox">
-        <div class="avatar">
-            <EmojiAvatar gender={person.gender} age={person.age}></EmojiAvatar>
+<div class="infobox">
+    <div class="avatar">
+        <EmojiAvatar gender={person.gender} age={person.age}></EmojiAvatar>
+    </div>
+    <div class="grid">
+        <div class="label">Пол:</div>
+        <div>{ formatGender(person.gender) }</div>
+
+        {#if person.nationality}
+            <div class="label">Национальность:</div>
+            <div>{person.nationality}</div>
+        {/if}
+
+        {#if person.birthName}
+            <div class="label">Имя при рождении:</div>
+            <div>{person.birthName}</div>
+        {/if}
+
+        <div class="label">Дата рождения:</div>
+        <div>
+            { formatDate(person.birthDate) }
+
+            {#if person.alive && person.hasAge}
+                ({ formatAge(person.age, person.ageInMonths) })
+            {/if}
         </div>
-        <div class="grid">
-            <div>Пол:</div>
-            <div>{ formatGender(person.gender) }</div>
 
-            {#if person.nationality}
-                <div>Национальность:</div>
-                <div>{person.nationality}</div>
-            {/if}
+        {#if person.birthPlace}
+            <div class="label">Место рождения:</div>
+            <div class="place" bind:this={birthPlaceEl}></div>
+        {/if}
 
-            {#if person.birthName}
-                <div>Имя при рождении:</div>
-                <div>{person.birthName}</div>
-            {/if}
-
-            <div>Дата рождения:</div>
+        {#if !person.alive}
+            <div class="label">Дата смерти:</div>
             <div>
-                { formatDate(person.birthDate) }
-
-                {#if person.alive && person.hasAge}
+                { formatDate(person.deathDate) }
+                {#if person.hasAge}
                     ({ formatAge(person.age, person.ageInMonths) })
                 {/if}
             </div>
 
-            {#if person.birthPlace}
-                <div>Место рождения:</div>
-                <div class="place" bind:this={birthPlaceEl}></div>
+            {#if person.deathPlace}
+                <div class="label">Место смерти:</div>
+                <div class="place" bind:this={deathPlaceEl}></div>
             {/if}
 
-            {#if !person.alive}
-                <div>Дата смерти:</div>
-                <div>
-                    { formatDate(person.deathDate) }
-                    {#if person.hasAge}
-                        ({ formatAge(person.age, person.ageInMonths) })
-                    {/if}
-                </div>
-
-                {#if person.deathPlace}
-                    <div>Место смерти:</div>
-                    <div class="place" bind:this={deathPlaceEl}></div>
-                {/if}
-
-                {#if person.burialPlace}
-                    <div>Место погребения:</div>
-                    <div class="place" bind:this={burialPlaceEl}></div>
-                {/if}
+            {#if person.burialPlace}
+                <div class="label">Место погребения:</div>
+                <div class="place" bind:this={burialPlaceEl}></div>
             {/if}
-        </div>
+        {/if}
     </div>
-{/if}
+</div>
 
 <style>
     .avatar {
@@ -110,6 +108,11 @@
         gap: 0 1rem;
         grid-template-columns: auto 1fr;
         grid-template-rows: auto;
+    }
+
+    .label {
+        font-weight: lighter;
+        font-style: italic;
     }
 
     .place {

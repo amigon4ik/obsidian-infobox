@@ -1236,9 +1236,9 @@
     "strip-indent" "^3.0.0"
 
 "svelte@^3.2.0", "svelte@^3.23.0", "svelte@^3.24.0", "svelte@^3.44.0", "svelte@^3.49.0", "svelte@>=3.19.0":
-  "integrity" "sha512-+lmjic1pApJWDfPCpUUTc1m8azDqYCG1JN9YEngrx/hUyIcFJo6VZhj0A1Ai0wqoHcEIuQy+e9tk+4uDgdtsFA=="
-  "resolved" "https://registry.npmjs.org/svelte/-/svelte-3.49.0.tgz"
-  "version" "3.49.0"
+  "integrity" "sha512-vzSyuGr3eEoAtT/A6bmajosJZIUWySzY2CzB3w2pgPvnkUjGqlDnsNnA0PMO+mMAhuyMul6C2uuZzY6ELSkzyA=="
+  "resolved" "https://registry.npmjs.org/svelte/-/svelte-3.59.2.tgz"
+  "version" "3.59.2"
 
 "text-table@^0.2.0":
   "integrity" "sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw=="
