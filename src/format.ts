@@ -1,5 +1,5 @@
 import type {Gender} from './parser';
-import type {Dayjs} from "dayjs";
+import type {Dayjs} from 'dayjs';
 
 function plural(number: number, titles: string[]): string {
     const cases = [2, 0, 1, 1, 1, 2];

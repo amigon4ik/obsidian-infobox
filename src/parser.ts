@@ -1,18 +1,13 @@
 import type {MarkdownPostProcessorContext} from 'obsidian';
-import {App, TFile} from "obsidian";
+import {App, TFile} from 'obsidian';
 import dayjs, {Dayjs} from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import 'dayjs/locale/ru';
-
-dayjs.extend(localizedFormat);
-dayjs.locale('ru');
 
 type Property = { key: string, value: unknown };
 type Properties = Array<Property>;
 export type Gender = 'male' | 'female' | null;
 export type Entity = Person;
 
-function toDate(value: unknown): Dayjs {
+export function toDate(value: unknown): Dayjs {
     return dayjs(typeof value === 'string' ? value : null, 'YYYY-MM-DD', true);
 }
 

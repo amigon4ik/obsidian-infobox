@@ -34,25 +34,25 @@
     }
 </script>
 
-<div class="infobox">
-    <div class="avatar">
+<div class="ib-container">
+    <div class="ib-avatar">
         <EmojiAvatar gender={person.gender} age={person.age}></EmojiAvatar>
     </div>
-    <div class="grid">
-        <div class="label">Пол:</div>
+    <div class="ib-grid">
+        <div class="ib-label">Пол:</div>
         <div>{ formatGender(person.gender) }</div>
 
         {#if person.nationality}
-            <div class="label">Национальность:</div>
+            <div class="ib-label">Национальность:</div>
             <div>{person.nationality}</div>
         {/if}
 
         {#if person.birthName}
-            <div class="label">Имя при рождении:</div>
+            <div class="ib-label">Имя при рождении:</div>
             <div>{person.birthName}</div>
         {/if}
 
-        <div class="label">Дата рождения:</div>
+        <div class="ib-label">Дата рождения:</div>
         <div>
             { formatDate(person.birthDate) }
 
@@ -62,12 +62,12 @@
         </div>
 
         {#if person.birthPlace}
-            <div class="label">Место рождения:</div>
-            <div class="place" bind:this={birthPlaceEl}></div>
+            <div class="ib-label">Место рождения:</div>
+            <div class="ib-place" bind:this={birthPlaceEl}></div>
         {/if}
 
         {#if !person.alive}
-            <div class="label">Дата смерти:</div>
+            <div class="ib-label">Дата смерти:</div>
             <div>
                 { formatDate(person.deathDate) }
                 {#if person.hasAge}
@@ -76,27 +76,27 @@
             </div>
 
             {#if person.deathPlace}
-                <div class="label">Место смерти:</div>
-                <div class="place" bind:this={deathPlaceEl}></div>
+                <div class="ib-label">Место смерти:</div>
+                <div class="ib-place" bind:this={deathPlaceEl}></div>
             {/if}
 
             {#if person.burialPlace}
-                <div class="label">Место погребения:</div>
-                <div class="place" bind:this={burialPlaceEl}></div>
+                <div class="ib-label">Место погребения:</div>
+                <div class="ib-place" bind:this={burialPlaceEl}></div>
             {/if}
         {/if}
     </div>
 </div>
 
 <style>
-    .infobox {
+    .ib-container {
         display: flex;
         gap: 2rem;
         align-items: start;
         margin-bottom: 2rem;
     }
 
-    .avatar {
+    .ib-avatar {
         display: grid;
         place-content: center;
         width: 180px;
@@ -109,19 +109,20 @@
         text-shadow: #000 1px 0 6px;
     }
 
-    .grid {
+    .ib-grid {
         display: grid;
         gap: 0 1rem;
         grid-template-columns: auto 1fr;
         grid-template-rows: auto;
     }
 
-    .label {
-        font-weight: lighter;
+    .ib-label {
+        font-weight: var(--font-light);
         font-style: italic;
+        color: var(--italic-color);
     }
 
-    .place {
+    .ib-place {
         --p-spacing: 0 !important;
     }
 </style>
