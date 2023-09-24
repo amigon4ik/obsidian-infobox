@@ -11,7 +11,7 @@ dayjs.locale('ru');
 const CALENDAR_VIEW_TYPE = 'infobox-calendar-view';
 
 class CalendarView extends ItemView {
-    calendar: Calendar;
+    component: Calendar;
 
     constructor(leaf: WorkspaceLeaf) {
         super(leaf);
@@ -26,14 +26,14 @@ class CalendarView extends ItemView {
     }
 
     async onOpen() {
-        this.calendar = new Calendar({
+        this.component = new Calendar({
             target: this.contentEl,
             props: {app: this.app},
         });
     }
 
     async onClose() {
-        this.calendar?.$destroy();
+        this.component?.$destroy();
     }
 }
 
