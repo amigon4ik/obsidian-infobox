@@ -43,7 +43,7 @@ export default class InfoboxPlugin extends Plugin {
             return new CalendarView(leaf);
         });
 
-        this.addRibbonIcon('calendar-with-checkmark', 'Open calendar view', async () => {
+        this.addRibbonIcon('calendar-check', 'Open calendar view', async () => {
             const leaf = this.app.workspace.getLeaf(true);
             this.app.workspace.setActiveLeaf(leaf);
             await leaf.setViewState({type: CALENDAR_VIEW_TYPE});
