@@ -106,7 +106,7 @@
                         {#each getBirthDays(date) as birthDay}
                             <div class="ib-calendar__event"
                                  title={birthDay.title}
-                                 on:click={openNote(birthDay.file)}>
+                                 on:click={() => openNote(birthDay.file)}>
                                 🎁 {birthDay.title}
                             </div>
                         {/each}

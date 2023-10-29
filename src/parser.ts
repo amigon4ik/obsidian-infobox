@@ -12,6 +12,7 @@ export function toDate(value: unknown): Dayjs {
 }
 
 export class Person {
+    private readonly app: App;
     private _gender: Gender = null;
     private _nationality = '';
     private _alive = true;
@@ -21,8 +22,10 @@ export class Person {
     private _deathDate: Dayjs;
     private _deathPlace = '';
     private _burialPlace = '';
+    private _image = '';
 
-    constructor() {
+    constructor(app: App) {
+        this.app = app;
         this._birthDate = toDate(null);
         this._deathDate = toDate(null);
     }
@@ -97,6 +100,28 @@ export class Person {
 
     set burialPlace(value: string) {
         this._burialPlace = value;
+    }
+
+    get image(): string {
+        return this._image;
+    }
+
+    set image(value: string) {
+        this._image = value;
+    }
+
+    get imageFile(): TFile | null {
+        const image = this.image;
+
+        if (image) {
+            const file = this.app.vault.getAbstractFileByPath(image);
+
+            if (file instanceof TFile) {
+                return file;
+            }
+        }
+
+        return null;
     }
 
     get age(): number {
@@ -179,8 +204,8 @@ async function parseFrontmatter(app: App, ctx: MarkdownPostProcessorContext): Pr
     return [];
 }
 
-export function parsePersonMeta(meta: Properties): Person {
-    const person = new Person();
+export function parsePersonMeta(app: App, meta: Properties): Person {
+    const person = new Person(app);
     person.gender = getPropAsGender(meta, 'gender');
     person.nationality = getPropAsString(meta, 'nationality');
     person.alive = getPropAsBool(meta, 'alive');
@@ -190,6 +215,7 @@ export function parsePersonMeta(meta: Properties): Person {
     person.deathDate = getPropAsDate(meta, 'death_date');
     person.deathPlace = getPropAsString(meta, 'death_place');
     person.burialPlace = getPropAsString(meta, 'burial_place');
+    person.image = getPropAsString(meta, 'image');
     return person;
 }
 
@@ -198,7 +224,7 @@ export async function parse(app: App, ctx: MarkdownPostProcessorContext): Promis
 
     switch (getProp(meta, 'type')) {
         case 'person':
-            return parsePersonMeta(meta);
+            return parsePersonMeta(app, meta);
     }
 
     return null;

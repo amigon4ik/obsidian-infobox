@@ -1,10 +1,12 @@
 <script lang="ts">
-    import type {MarkdownPostProcessorContext} from 'obsidian';
-    import {MarkdownRenderer} from 'obsidian';
+    import type {MarkdownPostProcessorContext, TFile} from 'obsidian';
+    import {App, MarkdownRenderer} from 'obsidian';
     import EmojiAvatar from './EmojiAvatar.svelte';
     import type InfoboxPlugin from '../index';
     import {formatAge, formatDate, formatGender} from '../format';
+    import type {Person} from '../parser';
 
+    export let app: App;
     export let ctx: MarkdownPostProcessorContext;
     export let plugin: InfoboxPlugin;
     export let person: Person;
@@ -19,6 +21,10 @@
         if (content.length) {
             MarkdownRenderer.renderMarkdown(content, el, ctx?.sourcePath ?? '', plugin);
         }
+    }
+
+    function showFile(file: TFile): void {
+        app.workspace.openLinkText('', file.path, true, {active: true});
     }
 
     $: if (birthPlaceEl) {
@@ -36,7 +42,13 @@
 
 <div class="ib-container">
     <div class="ib-avatar">
-        <EmojiAvatar gender={person.gender} age={person.age}></EmojiAvatar>
+        {#if person.imageFile}
+            <img src={app.vault.getResourcePath(person.imageFile)}
+                 alt="avatar"
+                 on:click={() => person.imageFile ? showFile(person.imageFile): null}>
+        {:else}
+            <EmojiAvatar gender={person.gender} age={person.age}></EmojiAvatar>
+        {/if}
     </div>
     <div class="ib-grid">
         <div class="ib-label">Пол:</div>
@@ -102,11 +114,21 @@
         width: 180px;
         height: 180px;
         background-image: linear-gradient(#6dd0f7, #ff99cb);
-        border-radius: 8px;
+        border-radius: var(--radius-m);
+        overflow: hidden;
         font-size: 110px;
         user-select: none;
         flex-shrink: 0;
         text-shadow: #000 1px 0 6px;
+        position: relative;
+    }
+
+    .ib-avatar > img {
+        position: absolute;
+        inset: 0;
+        object-fit: cover;
+        object-position: center;
+        cursor: pointer;
     }
 
     .ib-grid {
